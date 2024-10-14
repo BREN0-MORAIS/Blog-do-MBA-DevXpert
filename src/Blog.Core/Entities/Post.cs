@@ -14,6 +14,5 @@ namespace Blog.Core.Entities
         public DateTime Data { get; set; }
         public string AutorId { get; set; }
         public Autor Autor { get; set; }
-
     }
 }
