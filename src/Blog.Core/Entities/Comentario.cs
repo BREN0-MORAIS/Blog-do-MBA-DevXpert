@@ -8,5 +8,7 @@
         public Post Post { get; set; }
         public string AutorId { get; set; }
         public Autor Autor { get; set; }
+        public DateTime Data { get; set; }
+
     }
 }

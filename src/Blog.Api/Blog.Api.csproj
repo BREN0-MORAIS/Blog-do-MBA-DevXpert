@@ -12,7 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Blog.Core\Blog.Core.csproj" />
-    <ProjectReference Include="..\Blog.infraestruture\Blog.infrastructure.csproj" />
+    <ProjectReference Include="..\Blog.infraestruture\Blog.infraestructure.csproj" />
   </ItemGroup>
 
 </Project>
