@@ -1,7 +1,10 @@
-﻿namespace Blog.Core.Entities
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Blog.Core.Entities
 {
     public class Comentario
     {
+        [Key]
         public int Id { get; set; }
         public string Conteudo { get; set; }
         public int PostId { get; set; }

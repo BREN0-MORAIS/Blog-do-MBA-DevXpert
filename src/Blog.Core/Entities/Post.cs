@@ -8,5 +8,6 @@
         public DateTime Data { get; set; }
         public string AutorId { get; set; }
         public Autor Autor { get; set; }
+        public ICollection<Comentario> Comentarios { get; set; }
     }
 }
