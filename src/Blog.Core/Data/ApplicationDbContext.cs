@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace Blog.Infrastructure.Data
+namespace Blog.Core.Data
 {
     public class ApplicationDbContext : IdentityDbContext<Autor>
     {
@@ -10,6 +10,8 @@ namespace Blog.Infrastructure.Data
         public DbSet<Post> Posts { get; set; }
         public DbSet<Comentario> Comentarios { get; set; }
         public DbSet<Autor> Autor { get; set; }
+
+     
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
