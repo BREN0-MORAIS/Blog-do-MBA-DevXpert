@@ -1,9 +1,6 @@
-﻿using Blog.Core.Interfaces.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Blog.Core.Entities;
+using Blog.Core.Interfaces.Repositories;
+
 
 namespace Blog.Core.Services
 {
@@ -16,9 +13,10 @@ namespace Blog.Core.Services
             _postsRepository = postsRepository;
         }
 
-        public void CreatePost()
+        public async void CreatePost(Post entity)
         {
-
+               await  _postsRepository.Create(entity);
+               await _postsRepository.SaveAsync();
         }
 
     }
