@@ -11,10 +11,7 @@ namespace Blog.Core.DI
         {
 
             services.AddDbContext<ApplicationDbContext>();
-
             //services.AddAutoMapper(typeof(ProductProfile));
-
-
             ConfigureRepository(services);
 
             return services;
