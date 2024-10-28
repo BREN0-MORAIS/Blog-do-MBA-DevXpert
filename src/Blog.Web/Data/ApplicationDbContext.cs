@@ -1,0 +1,14 @@
+﻿using Blog.Core.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+
+namespace Blog.Web.Data
+{
+    public class ApplicationDbContext : IdentityDbContext<Autor>
+    {
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+            : base(options)
+        {
+        }
+    }
+}

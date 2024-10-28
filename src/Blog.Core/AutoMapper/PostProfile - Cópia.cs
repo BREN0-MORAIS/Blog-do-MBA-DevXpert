@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace Blog.Core.AutoMapper
 {
-    public class PostProfile : Profile
+    public class CommentsProfile : Profile
     {
-        public PostProfile()
+        public CommentsProfile()
         {
-            CreateMap<Post, PostDTO>().ReverseMap();
+            CreateMap<Comentario, CommentsDTO>().ReverseMap();
         }
     }
 }

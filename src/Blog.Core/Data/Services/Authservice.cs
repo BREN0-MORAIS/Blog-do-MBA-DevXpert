@@ -7,9 +7,9 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace Blog.Core.Services
+namespace Blog.Core.Data.Services
 {
-    public class Authservice: IAuthService
+    public class Authservice : IAuthService
     {
         private readonly SignInManager<Autor> _signInManager;
         private readonly UserManager<Autor> _userManager;

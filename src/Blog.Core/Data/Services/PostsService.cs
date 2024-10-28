@@ -2,9 +2,9 @@
 using Blog.Core.Interfaces.Repositories;
 
 
-namespace Blog.Core.Services
+namespace Blog.Core.Data.Services
 {
-    public class PostsService 
+    public class PostsService
     {
         private IPostsRepository _postsRepository;
 
@@ -15,8 +15,8 @@ namespace Blog.Core.Services
 
         public async void CreatePost(Post entity)
         {
-               await  _postsRepository.Create(entity);
-               await _postsRepository.SaveAsync();
+            await _postsRepository.Create(entity);
+            await _postsRepository.SaveAsync();
         }
 
     }

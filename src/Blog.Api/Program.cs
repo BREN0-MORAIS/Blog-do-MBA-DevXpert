@@ -1,6 +1,6 @@
 
 using Blog.Core.Data;
-using Blog.Core.DI;
+using Blog.Core.Data.DI;
 using Blog.Core.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -50,11 +50,8 @@ builder.Services.AddSwaggerGen(c =>
         });
     });
 
+builder.Services.AddDependenceInjection();
 
-builder.Services
-    .AddIdentity<Autor, IdentityRole>()
-    .AddRoles<IdentityRole>()
-    .AddEntityFrameworkStores<ApplicationDbContext>();
 
 var jwtSettingsSection = builder.Configuration.GetSection("JwtSettings");
 builder.Services.Configure<JwtSettings>(jwtSettingsSection);
@@ -82,7 +79,7 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-builder.Services.AddDependenceInjection();
+
 builder.Services.AddAuthorization();
 
 var app = builder.Build();

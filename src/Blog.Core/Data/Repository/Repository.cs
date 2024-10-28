@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
-namespace Blog.Core.Concrete
+namespace Blog.Core.Data.Repository
 {
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : class, new()
     {
@@ -14,7 +14,7 @@ namespace Blog.Core.Concrete
             try
             {
                 _dbContext = dbContext;
-                this._dbset = _dbContext.Set<TEntity>();
+                _dbset = _dbContext.Set<TEntity>();
                 _dbset.AsTracking();
             }
             catch (Exception ex)

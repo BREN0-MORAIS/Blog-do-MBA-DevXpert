@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Blog.Core.Concrete
+namespace Blog.Core.Data.Repository
 {
     public class CommentsRepository : Repository<Comentario>, ICommentsRepository
     {

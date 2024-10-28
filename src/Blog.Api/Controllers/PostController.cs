@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Blog.Core.Data;
-using Blog.Core.DTOs;
+using Blog.Core.Data.DTOs;
 using Blog.Core.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -26,7 +26,11 @@ namespace Blog.Api.Controllers
         [HttpGet("GetAllPosts")]
         public async Task<ActionResult<IEnumerable<Post>>> GetAllPosts()
         {
-            return await _context.Posts.ToListAsync();
+            var posts = await _context.Posts
+               .Include(p => p.Comentarios)
+               .Include(p => p.Autor).ToListAsync();
+
+            return posts;
         }
 
         [AllowAnonymous]
@@ -76,9 +80,5 @@ namespace Blog.Api.Controllers
 
             return NoContent();
         }
-
-
-
-
     }
 }

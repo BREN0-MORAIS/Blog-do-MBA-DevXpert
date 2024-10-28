@@ -1,15 +1,12 @@
 ﻿using Blog.Api.Models;
 using Blog.Core.Entities;
 using Blog.Core.Interfaces.Services;
-using Blog.Core.Services;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.Api.Controllers
 {
-  
+
     [Route("[controller]")]
     [ApiController]
     public class AuthController : ControllerBase

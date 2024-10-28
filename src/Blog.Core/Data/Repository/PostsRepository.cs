@@ -8,9 +8,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Blog.Core.Concrete
+namespace Blog.Core.Data.Repository
 {
-    public class PostsRepository:Repository<Post>, IPostsRepository
+    public class PostsRepository : Repository<Post>, IPostsRepository
     {
         public PostsRepository(ApplicationDbContext db) : base(db) { }
     }
