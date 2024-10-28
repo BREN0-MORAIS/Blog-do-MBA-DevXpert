@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Blog.Core.Identity.Model
+namespace Blog.Core.Entities
 {
     public class JwtSettings
     {
