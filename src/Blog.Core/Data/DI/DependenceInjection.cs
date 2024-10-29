@@ -1,5 +1,4 @@
 ﻿using Blog.Core.AutoMapper;
-using Blog.Core.Data;
 using Blog.Core.Data.Repository;
 using Blog.Core.Data.Services;
 using Blog.Core.Entities;
@@ -40,7 +39,7 @@ namespace Blog.Core.Data.DI
         {
             services.AddScoped<IPostsRepository, PostsRepository>();
             services.AddScoped<ICommentsRepository, CommentsRepository>();
-            services.AddScoped<IAuthService, Authservice>();
+            services.AddScoped<IAuthService, AuthService>();
 
         }
 

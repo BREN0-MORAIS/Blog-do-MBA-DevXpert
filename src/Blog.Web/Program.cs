@@ -6,6 +6,7 @@ using Blog.Core.Entities;
 using Blog.Web.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Blog.Core.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,8 +19,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 
-
-builder.Services.AddIdentity<Autor, IdentityRole>()
+builder.Services.AddDefaultIdentity<Autor>()
+    
+    //.AddIdentity<Autor, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 

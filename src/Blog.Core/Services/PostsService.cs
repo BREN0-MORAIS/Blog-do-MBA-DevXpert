@@ -2,7 +2,7 @@
 using Blog.Core.Interfaces.Repositories;
 
 
-namespace Blog.Core.Services
+namespace Blog.Core.Data.Services
 {
     public class PostsService
     {
