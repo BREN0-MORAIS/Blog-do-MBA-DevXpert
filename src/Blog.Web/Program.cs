@@ -2,8 +2,6 @@
 
 
 
-
-
 using Blog.Core.Entities;
 using Blog.Web.Data;
 using Microsoft.AspNetCore.Identity;
@@ -19,11 +17,13 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddDefaultIdentity<Autor>()
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+
+builder.Services.AddIdentity<Autor, IdentityRole>()
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultTokenProviders();
+
+
 
 builder.Services.AddControllersWithViews();
 
@@ -42,11 +42,14 @@ else
     app.UseHsts();
 }
 
+
+
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-//app.UseAuthentication();
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
