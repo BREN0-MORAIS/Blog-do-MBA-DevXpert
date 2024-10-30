@@ -1,4 +1,5 @@
-﻿using Blog.Core.Entities;
+﻿using Blog.Core.Data.DTOs;
+using Blog.Core.Entities;
 using Blog.Core.Interfaces.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
@@ -24,9 +25,10 @@ namespace Blog.Core.Data.Services
             _jwtSettings = jwtSettings.Value;
         }
 
-        public async Task<IdentityResult> Register(Autor user, string password)
+        public async Task<IdentityResult> Register(Autor user,string password)
 
         {
+
             return await _userManager.CreateAsync(user, password);
         }
 
@@ -47,7 +49,7 @@ namespace Blog.Core.Data.Services
             // Adicionar roles como claims
             foreach (var role in roles)
             {
-                claims.Add(new Claim(ClaimTypes.Role, role));
+                claims.Add(new Claim(ClaimTypes.NameIdentifier, user.Id));
             }
 
             var tokenHandler = new JwtSecurityTokenHandler();

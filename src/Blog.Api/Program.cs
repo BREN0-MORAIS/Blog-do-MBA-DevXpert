@@ -15,7 +15,6 @@ builder.Services.AddControllers();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
-
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
@@ -52,6 +51,7 @@ builder.Services.AddSwaggerGen(c =>
 
 builder.Services.AddDependenceInjection();
 
+builder.Services.AddHttpContextAccessor();
 
 var jwtSettingsSection = builder.Configuration.GetSection("JwtSettings");
 builder.Services.Configure<JwtSettings>(jwtSettingsSection);

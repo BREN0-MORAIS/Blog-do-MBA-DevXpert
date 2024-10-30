@@ -3,11 +3,14 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace Blog.Core.Migrations
 {
-
+    /// <inheritdoc />
     public partial class initial : Migration
     {
+        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
@@ -163,8 +166,9 @@ namespace Blog.Core.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Titulo = table.Column<string>(type: "TEXT", nullable: false),
                     Conteudo = table.Column<string>(type: "TEXT", nullable: false),
-                    Data = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    AutorId = table.Column<string>(type: "TEXT", nullable: false)
+                    AutorId = table.Column<string>(type: "TEXT", nullable: false),
+                    CreateAt = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    UpdateAt = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -186,7 +190,8 @@ namespace Blog.Core.Migrations
                     Conteudo = table.Column<string>(type: "TEXT", nullable: false),
                     PostId = table.Column<int>(type: "INTEGER", nullable: false),
                     AutorId = table.Column<string>(type: "TEXT", nullable: false),
-                    Data = table.Column<DateTime>(type: "TEXT", nullable: false)
+                    CreateAt = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    UpdateAt = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -203,6 +208,35 @@ namespace Blog.Core.Migrations
                         principalTable: "Posts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[,]
+                {
+                    { "1", null, "User", "USER" },
+                    { "2", null, "Admin", "ADMIN" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[,]
+                {
+                    { "1", 0, "c47af98e-beae-4e19-8149-de210199cfed", "user1@example.com", true, false, null, "USER1@EXAMPLE.COM", "USER1@EXAMPLE.COM", "AQAAAAIAAYagAAAAEG6Ckx+ovoeLa8Zp4PCXYTBzsdnE3kZyisJmyeBaobuO3Y4WU1c5+w4A3tLSa+P4Yw==", null, false, "34cc6eed-499c-4749-bf95-a58dd36bca65", false, "user1@example.com" },
+                    { "2", 0, "06a1050a-99f4-46db-b4fa-aef67f94e72b", "user2@example.com", true, false, null, "USER2@EXAMPLE.COM", "USER2@EXAMPLE.COM", "AQAAAAIAAYagAAAAEIUYMfx31nREy7CjOhue/rh3/2MItNBirXK0f1r/okufSwbj6wXSWB7dMKE2fLULVg==", null, false, "5172fb82-5211-45d0-8de1-56b6294280c3", false, "user2@example.com" },
+                    { "3", 0, "7c628cd9-f856-463d-bbed-b6d383404509", "admin@example.com", true, false, null, "ADMIN@EXAMPLE.COM", "ADMIN@EXAMPLE.COM", "AQAAAAIAAYagAAAAEIuxUYI6EwagRVCSsn3cV7J5ZFPtGf7dGsCrjlYOODtyWK2xUFE18jjBGDF1BqUlIg==", null, false, "11bd07e3-e284-483d-99fb-e7d26d905946", false, "admin@example.com" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUserRoles",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[,]
+                {
+                    { "1", "1" },
+                    { "1", "2" },
+                    { "2", "3" }
                 });
 
             migrationBuilder.CreateIndex(

@@ -1,4 +1,5 @@
-﻿using Blog.Core.Entities;
+﻿using Blog.Core.Data.DTOs;
+using Blog.Core.Entities;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;

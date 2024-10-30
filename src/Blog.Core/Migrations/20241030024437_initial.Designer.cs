@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Blog.Core.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241022143052_initial")]
+    [Migration("20241030024437_initial")]
     partial class initial
     {
         /// <inheritdoc />
@@ -82,6 +82,56 @@ namespace Blog.Core.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "1",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "c47af98e-beae-4e19-8149-de210199cfed",
+                            Email = "user1@example.com",
+                            EmailConfirmed = true,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "USER1@EXAMPLE.COM",
+                            NormalizedUserName = "USER1@EXAMPLE.COM",
+                            PasswordHash = "AQAAAAIAAYagAAAAEG6Ckx+ovoeLa8Zp4PCXYTBzsdnE3kZyisJmyeBaobuO3Y4WU1c5+w4A3tLSa+P4Yw==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "34cc6eed-499c-4749-bf95-a58dd36bca65",
+                            TwoFactorEnabled = false,
+                            UserName = "user1@example.com"
+                        },
+                        new
+                        {
+                            Id = "2",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "06a1050a-99f4-46db-b4fa-aef67f94e72b",
+                            Email = "user2@example.com",
+                            EmailConfirmed = true,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "USER2@EXAMPLE.COM",
+                            NormalizedUserName = "USER2@EXAMPLE.COM",
+                            PasswordHash = "AQAAAAIAAYagAAAAEIUYMfx31nREy7CjOhue/rh3/2MItNBirXK0f1r/okufSwbj6wXSWB7dMKE2fLULVg==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "5172fb82-5211-45d0-8de1-56b6294280c3",
+                            TwoFactorEnabled = false,
+                            UserName = "user2@example.com"
+                        },
+                        new
+                        {
+                            Id = "3",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "7c628cd9-f856-463d-bbed-b6d383404509",
+                            Email = "admin@example.com",
+                            EmailConfirmed = true,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "ADMIN@EXAMPLE.COM",
+                            NormalizedUserName = "ADMIN@EXAMPLE.COM",
+                            PasswordHash = "AQAAAAIAAYagAAAAEIuxUYI6EwagRVCSsn3cV7J5ZFPtGf7dGsCrjlYOODtyWK2xUFE18jjBGDF1BqUlIg==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "11bd07e3-e284-483d-99fb-e7d26d905946",
+                            TwoFactorEnabled = false,
+                            UserName = "admin@example.com"
+                        });
                 });
 
             modelBuilder.Entity("Blog.Core.Entities.Comentario", b =>
@@ -98,11 +148,14 @@ namespace Blog.Core.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("Data")
+                    b.Property<DateTime>("CreateAt")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("PostId")
                         .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("UpdateAt")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -127,11 +180,14 @@ namespace Blog.Core.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("Data")
+                    b.Property<DateTime>("CreateAt")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Titulo")
                         .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("UpdateAt")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -165,6 +221,20 @@ namespace Blog.Core.Migrations
                         .HasDatabaseName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "1",
+                            Name = "User",
+                            NormalizedName = "USER"
+                        },
+                        new
+                        {
+                            Id = "2",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -248,6 +318,23 @@ namespace Blog.Core.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "1",
+                            RoleId = "1"
+                        },
+                        new
+                        {
+                            UserId = "2",
+                            RoleId = "1"
+                        },
+                        new
+                        {
+                            UserId = "3",
+                            RoleId = "2"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>

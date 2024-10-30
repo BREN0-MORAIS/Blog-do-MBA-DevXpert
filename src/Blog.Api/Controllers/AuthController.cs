@@ -1,4 +1,6 @@
-﻿using Blog.Api.Models;
+﻿using AutoMapper;
+using Blog.Api.Models;
+using Blog.Core.Data.DTOs;
 using Blog.Core.Entities;
 using Blog.Core.Interfaces.Services;
 using Microsoft.AspNetCore.Identity;
@@ -13,37 +15,52 @@ namespace Blog.Api.Controllers
     {
         private  IAuthService _authService {  get; set; }
         private SignInManager<Autor> _signInManager {  get; set; }
-        public AuthController(IAuthService authService, SignInManager<Autor> signInManager)
+        private readonly UserManager<Autor> _userManager;
+
+        private readonly IMapper _mapper;
+        public AuthController(IAuthService authService, SignInManager<Autor> signInManager, IMapper mapper, UserManager<Autor> userManager)
         {
             _authService = authService;
             _signInManager = signInManager;
-            
+            _mapper = mapper;
+            _userManager = userManager;
         }
 
         [HttpPost("registrar")]
-        public async Task<ActionResult> Registrar(RegisterUserViewModel registerUser)
+        public async Task<ActionResult> Registrar(UserDTO userDto)
         {
-            if (!ModelState.IsValid) return ValidationProblem(ModelState);
+            if (!ModelState.IsValid)
+                return ValidationProblem(ModelState);
+
+            var existingUser = await _userManager.FindByEmailAsync(userDto.Email);
+            if (existingUser != null)
+            {
+                return BadRequest("Um usuário com esse email já está registrado.");
+            }
 
             var user = new Autor
             {
-                UserName = registerUser.Email,
-                Email = registerUser.Email,
+                UserName = userDto.Email,
+                Email = userDto.Email,
                 EmailConfirmed = true
             };
 
-            var result = await _authService.Register(user, registerUser.Password); 
+            var result = await _authService.Register(user, userDto.Password);
 
             if (result.Succeeded)
             {
-                await _signInManager.SignInAsync(user, false);
+                await _userManager.AddToRoleAsync(user, "User");
+                await _signInManager.SignInAsync(user, isPersistent: false);
 
 
-                return Ok(await  _authService.GenerateJwt(registerUser.Email));
+                var token = await _authService.GenerateJwt(userDto.Email);
+                return Ok(token);
             }
 
-            return Problem("Falha ao registrar o usuário");
+            // Retorna os erros se o registro falhar
+            return Problem("Falha ao registrar o usuário: " + string.Join(", ", result.Errors.Select(e => e.Description)));
         }
+
 
         [HttpPost("login")]
         public async Task<ActionResult> Login(LoginUserViewModel loginUser)
