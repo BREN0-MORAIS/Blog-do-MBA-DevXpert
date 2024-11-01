@@ -12,6 +12,7 @@ namespace Blog.Core.Data.DTOs
     {
         [Required(ErrorMessage = "O campo {0} é obrigatório")]
         [StringLength(100, ErrorMessage = "O título deve ter no máximo {1} caracteres")]
+        [MinLength(5, ErrorMessage = "O conteúdo deve ter pelo menos {1} caracteres")]
         public string Titulo { get; set; }
 
         [Required(ErrorMessage = "O campo {0} é obrigatório")]

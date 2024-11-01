@@ -1,0 +1,23 @@
+﻿@using Blog.Core.Data.DTOs
+@model PostDTO
+
+<div class="container">
+    <h2>Criar Novo Artigo</h2>
+
+    @using (Html.BeginForm("CreatePost", "Post", FormMethod.Post))
+    {
+        <div class="form-group">
+            @Html.TextBox("Titulo", null, new { @class = "form-control", placeholder = "Digite o título do artigo..." })
+            @Html.ValidationMessageFor(model => model.Titulo, "", new { @class = "text-danger" })
+        </div>
+        <br />
+        <div class="form-group">
+            @Html.TextArea("Conteudo", null, new { @class = "form-control", rows = 10, placeholder = "Escreva seu artigo aqui..." })
+            @Html.ValidationMessageFor(model => model.Conteudo, "", new { @class = "text-danger" })
+
+        </div>
+
+        <br />
+        <button type="submit" class="btn btn-primary">Publicar</button>
+    }
+</div>

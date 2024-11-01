@@ -7,6 +7,10 @@ html {
     font-size: 16px;
   }
 }
+.comment-content {
+    word-wrap: break-word; /* Permite que palavras longas quebrem a linha */
+    overflow-wrap: break-word; /* Para compatibilidade com navegadores */
+}
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
   box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;

@@ -28,9 +28,17 @@ namespace Blog.Web.Controllers
             _userManager = userManager;
         }
 
-        public ActionResult Index()
+		[AllowAnonymous]
+        public ActionResult Index(int id)
 		{
-			return View();
+			var post = _context.Posts
+					   .Include(p => p.Comentarios)
+                        .ThenInclude(c => c.Autor)
+                       .Include(p => p.Autor)
+
+						.Where(x=> x.Id == id).FirstOrDefault();
+
+			return View(post);
 		}
 
 		// GET: PostController/Details/5
@@ -102,9 +110,13 @@ namespace Blog.Web.Controllers
 			}
 		}
 
+		public ActionResult CreatePost()
+		{
+			return View();
+		}
 
-        [HttpPost]
-        public ActionResult Create(PostDTO postDto)
+		[HttpPost]
+        public ActionResult CreatePost(PostDTO postDto)
         {
             var userId = _userManager.GetUserId(User);
             if (ModelState.IsValid)
@@ -120,11 +132,11 @@ namespace Blog.Web.Controllers
 				_context.SaveChanges();
                 // Processa os dados, por exemplo, salvando em um banco de dados
                 ViewBag.Mensagem = "Dados recebidos com sucesso!";
-                return View("Index", post); // Redireciona para uma página de confirmação
+               return RedirectToAction("Index", "Home"); // Redireciona para uma página de confirmação
             }
 
             // Caso o modelo seja inválido, retorna para a view original com os dados e mensagens de erro
-            return View("Index", postDto);
+            return View("CreatePost", postDto); ;
         }
 
         public ActionResult EnviarDados()

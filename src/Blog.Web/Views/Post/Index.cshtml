@@ -1,19 +1,50 @@
-﻿@model CreatePostViewModel
+﻿@using Blog.Core.Entities
+@using Microsoft.AspNetCore.Identity
+@model Post
+@inject SignInManager<Autor> SignInManager
+<div class="container-fluid">
+    <h1 style="    text-align: center;">@Model.Titulo</h1>
 
-<div class="container">
-    <h2>Criar Novo Artigo</h2>
+    <p>
+        @Model.Conteudo
+    </p>
 
-   @using (Html.BeginForm("Create", "Post", FormMethod.Post))
+    <hr />
+
+    @if (SignInManager.IsSignedIn(User))
     {
-        <div class="form-group">
-            @Html.TextBox("Titulo", null, new { @class = "form-control", placeholder = "Digite o título do artigo..." })
-        </div>
-        <br />
-        <div class="form-group">
-            @Html.TextArea("Conteudo", null, new { @class = "form-control", rows = 10, placeholder = "Escreva seu artigo aqui..." })
+        @using (Html.BeginForm("CreatePost", "Post", FormMethod.Post))
+        {
+            <div class="container">
+                <h2>Comentário</h2>
+
+
+                <div class="form-group">
+                    @Html.TextArea("Conteudo", null, new { @class = "form-control", rows = 5, placeholder = "Escreva seu artigo aqui..." })
+                    @Html.ValidationMessageFor(model => model.Conteudo, "", new { @class = "text-danger" })
+
+                </div>
+
+                <br />
+                <button type="submit" class="btn btn-primary">Publicar</button>
+
+            </div>
+        }
+    }
+    <br />
+    <hr />
+    @foreach (var comentario in Model.Comentarios)
+    {
+
+        <div>
+            <h5 class="mt-0">@comentario.Autor.UserName</h5>
+            <p class="comment-content">
+                @comentario.Conteudo
+            </p>
         </div>
 
-        <br />
-        <button type="submit" class="btn btn-primary">Publicar</button>
-    } 
+        <hr />
+
+    }
+
 </div>
