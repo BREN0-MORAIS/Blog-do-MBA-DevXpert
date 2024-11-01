@@ -1,27 +1,28 @@
 ﻿@using Blog.Core.Entities
 @using Microsoft.AspNetCore.Identity
-@model Post
+@model PostComentarioViewModel
 @inject SignInManager<Autor> SignInManager
 <div class="container-fluid">
-    <h1 style="    text-align: center;">@Model.Titulo</h1>
+    <h1 style="    text-align: center;">@Model.Post.Titulo</h1>
 
     <p>
-        @Model.Conteudo
+        @Model.Post.Conteudo
     </p>
 
     <hr />
 
     @if (SignInManager.IsSignedIn(User))
     {
-        @using (Html.BeginForm("CreatePost", "Post", FormMethod.Post))
+        @using (Html.BeginForm("CreateComment", "Post", FormMethod.Post))
         {
             <div class="container" style="    background-color: #80808014;  padding: 22px;   border-radius: 13px;">
                 <h2>Comentário</h2>
 
 
                 <div class="form-group">
-                    @Html.TextArea("Conteudo", null, new { @class = "form-control", rows = 5, placeholder = "Escreva seu artigo aqui..." })
-                    @Html.ValidationMessageFor(model => model.Conteudo, "", new { @class = "text-danger" })
+                    @Html.Hidden("PostId", Model.Post.Id) 
+                    @Html.TextArea("Comentario", null, new { @class = "form-control", rows = 5, placeholder = "Escreva seu artigo aqui..." })
+                    @Html.ValidationMessageFor(model => model.Comentario, "", new { @class = "text-danger" })
 
                 </div>
 
@@ -32,7 +33,7 @@
         }
     }
     <br />
-    @foreach (var comentario in Model.Comentarios)
+    @foreach (var comentario in Model.Post.Comentarios)
     {
 
         <div style="    border: 1px solid #dddddd;

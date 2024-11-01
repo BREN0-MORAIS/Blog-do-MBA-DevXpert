@@ -2,7 +2,7 @@
 
 namespace Blog.Web.Models
 {
-    public class PostViewModel
+    public class ListaPostViewModel
     {
 
         public List<Post> ListaPosts { get; set; } = new List<Post>();

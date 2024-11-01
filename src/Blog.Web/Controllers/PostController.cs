@@ -12,9 +12,9 @@ using Microsoft.Extensions.Hosting;
 
 namespace Blog.Web.Controllers
 {
-	[Authorize]
-	public class PostController : Controller
-	{
+    [Authorize]
+    public class PostController : Controller
+    {
         // GET: PostController
 
         private ApplicationDbContext _context { get; set; }
@@ -28,94 +28,109 @@ namespace Blog.Web.Controllers
             _userManager = userManager;
         }
 
-		[AllowAnonymous]
+        [AllowAnonymous]
         public ActionResult Index(int id)
-		{
-			var post = _context.Posts
-					   .Include(p => p.Comentarios)
+        {
+            var posCOmentario = new PostComentarioViewModel();
+
+            var post = _context.Posts
+                       .Include(p => p.Comentarios)
                         .ThenInclude(c => c.Autor)
                        .Include(p => p.Autor)
 
-						.Where(x=> x.Id == id).FirstOrDefault();
+                        .Where(x => x.Id == id).FirstOrDefault();
+            posCOmentario.Post = post;
 
-			return View(post);
-		}
+            return View(posCOmentario);
+        }
 
-		// GET: PostController/Details/5
-		public ActionResult Details(int id)
-		{
-			return View();
-		}
+        // GET: PostController/Details/5
+        public ActionResult Details(int id)
+        {
+            return View();
+        }
 
-		// GET: PostController/Create
-		public ActionResult Create()
-		{
-			return View();
-		}
+        // GET: PostController/Create
+        public ActionResult Create()
+        {
+            return View();
+        }
 
-		// POST: PostController/Create
-		//[HttpPost]
-		//[ValidateAntiForgeryToken]
-		//public ActionResult Create(IFormCollection collection)
-		//{
-		//	try
-		//	{
-		//		return RedirectToAction(nameof(Index));
-		//	}
-		//	catch
-		//	{
-		//		return View();
-		//	}
-		//}
+        // POST: PostController/Create
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Create(IFormCollection collection)
+        //{
+        //	try
+        //	{
+        //		return RedirectToAction(nameof(Index));
+        //	}
+        //	catch
+        //	{
+        //		return View();
+        //	}
+        //}
 
-		// GET: PostController/Edit/5
-		public ActionResult Edit(int id)
-		{
-			return View();
-		}
+        // GET: PostController/Edit/5
+        public ActionResult Edit(int id)
+        {
+            return View();
+        }
 
-		// POST: PostController/Edit/5
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public ActionResult Edit(int id, IFormCollection collection)
-		{
-			try
-			{
-				return RedirectToAction(nameof(Index));
-			}
-			catch
-			{
-				return View();
-			}
-		}
+        // POST: PostController/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(int id, IFormCollection collection)
+        {
+            try
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
+        }
 
-		// GET: PostController/Delete/5
-		public ActionResult Delete(int id)
-		{
-			return View();
-		}
+        // GET: PostController/Delete/5
+        public ActionResult Delete(int id)
+        {
+            return View();
+        }
 
-		// POST: PostController/Delete/5
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public ActionResult Delete(int id, IFormCollection collection)
-		{
-			try
-			{
-				return RedirectToAction(nameof(Index));
-			}
-			catch
-			{
-				return View();
-			}
-		}
+        // POST: PostController/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(int id, IFormCollection collection)
+        {
+            try
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
+        }
 
-		public ActionResult CreatePost()
-		{
-			return View();
-		}
+        public ActionResult CreatePost()
+        {
+            return View();
 
-		[HttpPost]
+        }
+        [HttpPost]
+        public ActionResult CreateComment(string Comentario, int PostId)
+        {
+            var userId = _userManager.GetUserId(User);
+
+
+            _context.Comentarios.Add(new Comentario { PostId =  PostId ,Conteudo= Comentario, AutorId = userId });
+            _context.SaveChanges();
+
+            return RedirectToAction("Index", "Post", new { id = PostId });
+        }
+
+        [HttpPost]
         public ActionResult CreatePost(PostDTO postDto)
         {
             var userId = _userManager.GetUserId(User);
@@ -124,15 +139,15 @@ namespace Blog.Web.Controllers
                 var post = _mapper.Map<PostDTO, Post>(postDto);
                 post.AutorId = userId;
 
-				post.CreatedDate();
-				post.ChangedDate();
+                post.CreatedDate();
+                post.ChangedDate();
 
 
                 _context.Posts.Add(post);
-				_context.SaveChanges();
+                _context.SaveChanges();
                 // Processa os dados, por exemplo, salvando em um banco de dados
                 ViewBag.Mensagem = "Dados recebidos com sucesso!";
-               return RedirectToAction("Index", "Home"); // Redireciona para uma página de confirmação
+                return RedirectToAction("Index", "Home"); // Redireciona para uma página de confirmação
             }
 
             // Caso o modelo seja inválido, retorna para a view original com os dados e mensagens de erro
