@@ -30,7 +30,7 @@ namespace Blog.Web.Controllers
             
             var posts = _context.Posts
                         .Include(p => p.Comentarios)
-                        .Include(p => p.Autor).ToList();
+                        .Include(p => p.Autor).ToList().OrderByDescending(x=> x.Id);
 
             listaPosts.ListaPosts.AddRange(posts);
 

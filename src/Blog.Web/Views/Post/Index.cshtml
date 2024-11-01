@@ -15,7 +15,9 @@
     {
         @using (Html.BeginForm("CreatePost", "Post", FormMethod.Post))
         {
-            <div class="container">
+            <div class="container" style="    background-color: #80808014;
+    padding: 22px;
+    border-radius: 13px;">
                 <h2>Comentário</h2>
 
 
@@ -32,14 +34,16 @@
         }
     }
     <br />
-    <hr />
     @foreach (var comentario in Model.Comentarios)
     {
 
-        <div>
+        <div style="    border: 1px solid #dddddd;
+    padding: 10px;
+    border-radius: 7px;">
             <h5 class="mt-0">@comentario.Autor.UserName</h5>
             <p class="comment-content">
                 @comentario.Conteudo
+                @comentario.CreateAt
             </p>
         </div>
 
