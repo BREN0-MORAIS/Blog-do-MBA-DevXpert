@@ -26,8 +26,6 @@ namespace Blog.Api.Controllers
             _mapper= mapper;
             _userManager = userManager;
 
-
-
         }
         [AllowAnonymous]
         [HttpGet("GetAllPosts")]
@@ -110,7 +108,16 @@ namespace Blog.Api.Controllers
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeletePost(int id)
         {
-            
+            var userId = _userManager.GetUserId(User);
+            var isAdmin = await _userManager.IsInRoleAsync(await _userManager.FindByIdAsync(userId), "Admin");
+            var userPost = await _context.Posts.FindAsync(id);
+
+
+
+            if (!userPost.AutorId.Equals(userId) && !isAdmin)
+            {
+                return Forbid();
+            }
 
 
             var post = await _context.Posts.FindAsync(id);

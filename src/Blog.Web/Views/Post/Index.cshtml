@@ -1,0 +1,19 @@
+﻿
+
+<div class="container">
+    <h2>Criar Novo Artigo</h2>
+
+   @using (Html.BeginForm("Create", "Article", FormMethod.Post))
+    {
+        <div class="form-group">
+            @Html.TextBox("Titulo", null, new { @class = "form-control", placeholder = "Digite o título do artigo..." })
+        </div>
+        <br />
+        <div class="form-group">
+            @Html.TextArea("Conteudo", null, new { @class = "form-control", rows = 10, placeholder = "Escreva seu artigo aqui..." })
+        </div>
+
+        <br />
+        <button type="submit" class="btn btn-primary">Publicar</button>
+    } 
+</div>

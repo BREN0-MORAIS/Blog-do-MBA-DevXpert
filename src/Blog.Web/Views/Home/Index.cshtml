@@ -2,7 +2,35 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+
+ @model Blog.Web.Models.DadosViewModel
+
+@functions {
+    public string Truncate(string text, int maxLength)
+    {
+        if (string.IsNullOrEmpty(text) || text.Length <= maxLength)
+            return text;
+
+        return text.Substring(0, maxLength) + "..."; 
+    }
+}
+
+@foreach (var item in Model.ListaPosts)
+{
+    
+
+
+
+  <div class="container mt-5">
+    <div class="card" style="width: 47rem; margin:auto;">
+      <div class="card-body">
+                <h5 class="card-title"><b> @item.Titulo </b></h5>
+                <p class="card-text">@Truncate(item.Conteudo, 100)</p> 
+                <p class="card-text">@item.Autor.UserName</p>
+                <p class="card-text">@item.CreateAt</p>
+                <p class="card-text">@item.UpdateAt</p>
+        <a href="#" class="btn btn-primary">Saiba mais</a>
+      </div>
+    </div>
+	</div>
+}

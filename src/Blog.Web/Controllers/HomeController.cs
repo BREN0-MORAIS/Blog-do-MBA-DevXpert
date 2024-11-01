@@ -1,5 +1,10 @@
+using AutoMapper;
+using Blog.Core.Data;
+using Blog.Core.Entities;
 using Blog.Web.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
 namespace Blog.Web.Controllers
@@ -7,15 +12,32 @@ namespace Blog.Web.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private ApplicationDbContext _context { get; set; }
+        private readonly IMapper _mapper;
+        private readonly UserManager<Autor> _userManager;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ApplicationDbContext context, IMapper mapper, UserManager<Autor> userManager)
         {
-            _logger = logger;
+            _context = context;
+            _mapper = mapper;
+            _userManager = userManager;
         }
+       
 
-        public IActionResult Index()
+        public  IActionResult Index()
         {
-            return View();
+            DadosViewModel listaPosts = new DadosViewModel();
+            
+            var posts = _context.Posts
+                        .Include(p => p.Comentarios)
+                        .Include(p => p.Autor).ToList();
+
+            listaPosts.ListaPosts.AddRange(posts);
+
+
+            return View(listaPosts);
+
+        
         }
 
         public IActionResult Privacy()
@@ -28,5 +50,8 @@ namespace Blog.Web.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+       
     }
 }
+

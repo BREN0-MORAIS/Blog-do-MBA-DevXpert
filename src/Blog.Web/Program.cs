@@ -7,6 +7,7 @@ using Blog.Web.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Blog.Core.Data;
+using Blog.Core.Data.DI;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,11 +26,11 @@ builder.Services.AddDefaultIdentity<Autor>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
-
+builder.Services.AddDependenceInjectionMVC();
 
 builder.Services.AddControllersWithViews();
 
-//builder.Services.AddDependenceInjectionMVC();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
