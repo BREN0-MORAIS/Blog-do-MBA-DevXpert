@@ -26,7 +26,7 @@ namespace Blog.Web.Controllers
 
         public  IActionResult Index()
         {
-            DadosViewModel listaPosts = new DadosViewModel();
+            PostViewModel listaPosts = new PostViewModel();
             
             var posts = _context.Posts
                         .Include(p => p.Comentarios)
