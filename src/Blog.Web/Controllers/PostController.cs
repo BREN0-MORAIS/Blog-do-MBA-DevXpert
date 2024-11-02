@@ -29,19 +29,30 @@ namespace Blog.Web.Controllers
         }
 
         [AllowAnonymous]
-        public ActionResult Index(int id)
+        public async Task<ActionResult> Index(int id)
         {
             var posCOmentario = new PostComentarioViewModel();
+			var userId = _userManager.GetUserId(User);
+			var isAdmin = await _userManager.IsInRoleAsync(await _userManager.FindByIdAsync(userId), "Admin");
 
-            var post = _context.Posts
+			var post = _context.Posts
                        .Include(p => p.Comentarios)
                         .ThenInclude(c => c.Autor)
                        .Include(p => p.Autor)
 
                         .Where(x => x.Id == id).FirstOrDefault();
+
+
             posCOmentario.Post = post;
 
-            return View(posCOmentario);
+
+          
+
+
+
+
+
+			return View(posCOmentario);
         }
 
         // GET: PostController/Details/5
@@ -101,8 +112,12 @@ namespace Blog.Web.Controllers
         // POST: PostController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<ActionResult> Delete(int id, IFormCollection collection)
         {
+            var userId = _userManager.GetUserId(User);
+            var isAdmin = await _userManager.IsInRoleAsync(await _userManager.FindByIdAsync(userId), "Admin");
+
+
             try
             {
                 return RedirectToAction(nameof(Index));
@@ -123,8 +138,11 @@ namespace Blog.Web.Controllers
         {
             var userId = _userManager.GetUserId(User);
 
+            var comentario = new Comentario { PostId = PostId, Conteudo = Comentario, AutorId = userId };
 
-            _context.Comentarios.Add(new Comentario { PostId =  PostId ,Conteudo= Comentario, AutorId = userId });
+            comentario.CreatedDate();
+
+            _context.Comentarios.Add(comentario);
             _context.SaveChanges();
 
             return RedirectToAction("Index", "Post", new { id = PostId });

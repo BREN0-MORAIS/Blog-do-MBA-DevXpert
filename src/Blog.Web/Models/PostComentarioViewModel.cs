@@ -7,5 +7,8 @@ namespace Blog.Web.Models
     {
         public Post Post { get; set; } = new Post();
         public string Comentario { get; set; }
+
+        public bool IsDelete { get; set; }
+        public bool IsEdit{ get; set; }
     }
 }

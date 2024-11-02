@@ -2,52 +2,82 @@
 @using Microsoft.AspNetCore.Identity
 @model PostComentarioViewModel
 @inject SignInManager<Autor> SignInManager
-<div class="container-fluid">
-    <h1 style="    text-align: center;">@Model.Post.Titulo</h1>
-
-    <p>
-        @Model.Post.Conteudo
-    </p>
-
-    <hr />
-
-    @if (SignInManager.IsSignedIn(User))
-    {
-        @using (Html.BeginForm("CreateComment", "Post", FormMethod.Post))
-        {
-            <div class="container" style="    background-color: #80808014;  padding: 22px;   border-radius: 13px;">
-                <h2>Comentário</h2>
+<div class="container-fluid" style="width:65% !important;">
 
 
-                <div class="form-group">
-                    @Html.Hidden("PostId", Model.Post.Id) 
-                    @Html.TextArea("Comentario", null, new { @class = "form-control", rows = 5, placeholder = "Escreva seu artigo aqui..." })
-                    @Html.ValidationMessageFor(model => model.Comentario, "", new { @class = "text-danger" })
+	<h1 style="    text-align: center;">@Model.Post.Titulo</h1>
+	<div style="    width: 100%;
+    height: 64px;
+    border: 1px solid #856f6f1f;
+    border-radius: 4px;
+    padding: 10px;
+    margin-bottom: 20px;">
 
-                </div>
+		<span><b> @Model.Post.Autor.UserName</b></span><br />
+		<span>Publicado em @Model.Post.CreateAt</span>
 
-                <br />
-                <button type="submit" class="btn btn-primary">Publicar</button>
+		@if (!Model.Post.CreateAt.ToString("dd/MM/yyyy").Equals(Model.Post.UpdateAt.ToString("dd/MM/yyyy")))
+		{
+			<span>Última Atualização @Model.Post.UpdateAt</span>
+		}
 
-            </div>
-        }
-    }
-    <br />
-    @foreach (var comentario in Model.Post.Comentarios)
-    {
+	</div>
+	<p style="text-align:justify !important;">
+		@Model.Post.Conteudo
+	</p>
 
-        <div style="    border: 1px solid #dddddd;
+	<hr />
+
+	@if (SignInManager.IsSignedIn(User))
+	{
+		@using (Html.BeginForm("CreateComment", "Post", FormMethod.Post))
+		{
+			<div class="container" style="    background-color: #80808014;  padding: 22px;   border-radius: 13px;">
+				<h2>Comentário</h2>
+
+
+				<div class="form-group">
+					@Html.Hidden("PostId", Model.Post.Id)
+					@Html.TextArea("Comentario", null, new { @class = "form-control", rows = 5, placeholder = "Escreva seu artigo aqui..." })
+					@Html.ValidationMessageFor(model => model.Comentario, "", new { @class = "text-danger" })
+
+				</div>
+
+				<br />
+				<button type="submit" class="btn btn-primary">Publicar</button>
+
+			</div>
+		}
+	}
+	<br />
+	@foreach (var comentario in Model.Post.Comentarios)
+	{
+		<hr />
+		<div style="    border: 1px solid #dddddd;
     padding: 10px;
     border-radius: 7px;">
-            <h5 class="mt-0">@comentario.Autor.UserName</h5>
-            <p class="comment-content">
-                @comentario.Conteudo
-                @comentario.CreateAt
-            </p>
-        </div>
+			<h5 class="mt-0">@comentario.Autor.UserName</h5>
+			<p class="comment-content" style="text-align:justify !important;">
+				@comentario.Conteudo
+				<br />
+				<br />
 
-        <hr />
 
-    }
+
+				<button type="submit" class="btn btn-outline-danger">Excluir</button>
+				<button type="button" class="btn btn-outline-primary">Editar</button>
+
+				<br />
+				<span style="float:right;">@comentario.CreateAt</span>
+
+
+			</p>
+
+
+		</div>
+
+
+
+	}
 
 </div>
