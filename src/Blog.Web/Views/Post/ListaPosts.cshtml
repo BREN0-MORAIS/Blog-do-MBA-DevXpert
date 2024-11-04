@@ -1,0 +1,38 @@
+﻿@model Blog.Web.Models.ListaPostViewModel
+
+<table class="table">
+	<thead class="thead-dark">
+		<tr>
+			<th scope="col">#</th>
+			<th scope="col">Titulo</th>
+			<th scope="col">Data Criação</th>
+@* 			<th scope="col">Autor</th>
+ *@			<th scope="col"></th>
+		</tr>
+	</thead>
+	<tbody>
+		
+			@foreach (var item in Model.ListaPosts)
+		{
+			<tr>
+				<th scope="row">@item.Id</th>
+				<td>@item.Titulo</td>
+				<td>@item.CreateAt</td>
+@* 				<td>@item.Autor.UserName</td>
+ *@				<td>
+					<div style="float:right;">
+						<a asp-controller="Post" asp-action="Index" asp-route-id="@item.Id" type="button" class="btn btn-secondary">Visualizar</a>
+						<a asp-controller="Post" asp-action="CreatePost" asp-route-id="@item.Id" type="button" class="btn btn-primary">Editar</a>
+						<form asp-controller="Post" asp-action="Delete" asp-route-id="@item.Id" method="post" style="display:inline;">
+							<button type="submit" class="btn btn-danger">Excluir</button>
+						</form>
+					</div>
+
+				</td>
+			</tr>
+			}
+			
+		
+
+	</tbody>
+</table>
