@@ -40,6 +40,7 @@ namespace Blog.Core.Data.DI
             services.AddScoped<IPostsRepository, PostsRepository>();
             services.AddScoped<ICommentsRepository, CommentsRepository>();
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IPostsService, PostsService>();
 
         }
 

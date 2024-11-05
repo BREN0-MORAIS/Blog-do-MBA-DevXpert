@@ -13,7 +13,10 @@ namespace Blog.Core.AutoMapper
     {
         public PostProfile()
         {
-            CreateMap<Post, PostDTO>().ReverseMap();
-        }
+			//CreateMap<Post, PostDTO>().ReverseMap();
+
+			CreateMap<PostDTO, Post>()
+		  .ForMember(dest => dest.Id, opt => opt.Ignore());
+		}
     }
 }

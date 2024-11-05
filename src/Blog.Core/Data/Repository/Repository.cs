@@ -23,49 +23,48 @@ namespace Blog.Core.Data.Repository
                 throw;
             }
         }
-        public async Task<IEnumerable<TEntity>> GetAll(string includes = null, Expression<Func<TEntity, bool>> expression = null)
-        {
-            IQueryable<TEntity> query = _dbset;
-            if (expression != null)
-                query.Where(expression);
+		public async Task<IEnumerable<TEntity>> GetAll(string includes = null, Expression<Func<TEntity, bool>> expression = null)
+		{
+			IQueryable<TEntity> query = _dbset;
 
-            if (includes != null)
-            {
-                foreach (var includeProp in includes.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
-                {
-                    _dbset.Include(includeProp);
-                }
-            }
+			if (expression != null)
+				query = query.Where(expression);
 
+			if (includes != null)
+			{
+				foreach (var includeProp in includes.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+				{
+					query = query.Include(includeProp);
+				}
+			}
 
-
-            return await _dbset.ToListAsync(); ;
-        }
-
+			return await query.ToListAsync();
+		}
 
 
-        public async Task<TEntity> GetById(int id, string includes = null, Expression<Func<TEntity, bool>> expression = null)
-        {
-            IQueryable<TEntity> query = _dbset;
+
+		public async Task<TEntity> GetById(int id, string includes = null, Expression<Func<TEntity, bool>> expression = null)
+		{
+			IQueryable<TEntity> query = _dbset;
+
+			if (expression != null)
+			{
+				query = query.Where(expression);
+			}
+
+			if (!string.IsNullOrEmpty(includes))
+			{
+				foreach (var includeProp in includes.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+				{
+					query = query.Include(includeProp);
+				}
+			}
+
+			return await query.FirstOrDefaultAsync(e => EF.Property<int>(e, "Id") == id);
+		}
 
 
-            if (expression != null)
-            {
-                query = query.Where(expression);
-            }
-
-            if (includes != null)
-            {
-                foreach (var includeProp in includes.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
-                {
-                    query = query.Include(includeProp);
-                }
-            }
-
-            return await query.FirstOrDefaultAsync(e => EF.Property<int>(e, "Id") == id);
-        }
-
-        public void Remove(TEntity entity)
+		public void Remove(TEntity entity)
         {
             _dbset.Remove(entity);
         }
