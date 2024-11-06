@@ -23,7 +23,7 @@ namespace Blog.Api.Controllers
 		private readonly ICommentsRepository _commentsRepository;
 		private readonly ICommentsService _commentsService;
 
-		public CommentsController(ApplicationDbContext context, IMapper mapper, UserManager<Autor> userManager, ICommentsRepository commentsRepository, ICommentsService commentsService)
+		public CommentsController(ICommentsRepository commentsRepository, ICommentsService commentsService)
 		{
 			_commentsRepository = commentsRepository;
 			_commentsService = commentsService;

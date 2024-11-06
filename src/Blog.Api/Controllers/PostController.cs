@@ -22,7 +22,7 @@ namespace Blog.Api.Controllers
 		private readonly IPostsService _postsService;
 
 
-		public PostController(ApplicationDbContext context, IMapper mapper, UserManager<Autor> userManager, IPostsRepository postRepository, IPostsService postService)
+		public PostController(IPostsRepository postRepository, IPostsService postService)
 		{
 			_postRepository = postRepository;
 			_postsService = postService;
