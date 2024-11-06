@@ -18,18 +18,12 @@ namespace Blog.Api.Controllers
 	[ApiController]
 	public class PostController : ControllerBase
 	{
-		private ApplicationDbContext _context { get; set; }
-		private readonly IMapper _mapper;
-		private readonly UserManager<Autor> _userManager;
 		private readonly IPostsRepository _postRepository;
 		private readonly IPostsService _postsService;
 
 
 		public PostController(ApplicationDbContext context, IMapper mapper, UserManager<Autor> userManager, IPostsRepository postRepository, IPostsService postService)
 		{
-			_context = context;
-			_mapper = mapper;
-			_userManager = userManager;
 			_postRepository = postRepository;
 			_postsService = postService;
 		}
@@ -81,14 +75,13 @@ namespace Blog.Api.Controllers
 		[HttpDelete("{id:int}")]
 		public async Task<IActionResult> DeletePost(int id)
 		{
-			var userPost = await _context.Posts.FindAsync(id);
+			var userPost = await _postRepository.GetById(id);
 
 			if (!await _postsService.UserHasPermissionPost(id, userPost, User))
 			{
 				return Forbid();
 			}
-			var post = await _context.Posts.FindAsync(id);
-		    _postRepository.Remove(post);
+		    _postRepository.Remove(userPost);
 			await _postRepository.SaveAsync();
 
 			return NoContent();

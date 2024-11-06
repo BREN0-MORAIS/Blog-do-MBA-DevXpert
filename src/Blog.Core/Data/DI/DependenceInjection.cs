@@ -39,8 +39,9 @@ namespace Blog.Core.Data.DI
         {
             services.AddScoped<IPostsRepository, PostsRepository>();
             services.AddScoped<ICommentsRepository, CommentsRepository>();
-            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<ICommentsService, CommentsService>();
             services.AddScoped<IPostsService, PostsService>();
+            services.AddScoped<IAuthService, AuthService>();
 
         }
 

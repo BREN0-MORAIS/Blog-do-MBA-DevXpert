@@ -15,20 +15,24 @@ namespace Blog.Core.Data
      
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+			base.OnModelCreating(modelBuilder); 
 
 			modelBuilder.Entity<Post>()
-	              .HasMany(p => p.Comentarios) 
-	              .WithOne(c => c.Post)        
-	              .HasForeignKey(c => c.PostId) 
-	              .OnDelete(DeleteBehavior.Cascade);
+				.HasKey(p => p.Id);
 
-			modelBuilder.Entity<Comentario>()
+			modelBuilder.Entity<Post>()
+				.HasMany(p => p.Comentarios)
+				.WithOne(c => c.Post)
+				.HasForeignKey(c => c.PostId)
+				.OnDelete(DeleteBehavior.Cascade);
 
-			  .HasOne(c => c.Post)
-			  .WithMany(p => p.Comentarios)
-			  .HasForeignKey(c => c.PostId)
-			  .OnDelete(DeleteBehavior.Restrict);
-			base.OnModelCreating(modelBuilder);
+			//modelBuilder.Entity<Comentario>()
+
+			//  .HasOne(c => c.Post)
+			//  .WithMany(p => p.Comentarios)
+			//  .HasForeignKey(c => c.PostId)
+			//  .OnDelete(DeleteBehavior.Restrict);
+
 
 
 

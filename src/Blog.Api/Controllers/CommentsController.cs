@@ -1,9 +1,14 @@
 ﻿using AutoMapper;
 using Blog.Core.Data;
 using Blog.Core.Data.DTOs;
+using Blog.Core.Data.Repository;
+using Blog.Core.Data.Services;
 using Blog.Core.Entities;
+using Blog.Core.Interfaces.Repositories;
+using Blog.Core.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,42 +20,39 @@ namespace Blog.Api.Controllers
     public class CommentsController : ControllerBase
     {
 
-        private ApplicationDbContext _context { get; set; }
-        private readonly IMapper _mapper;
+		private readonly ICommentsRepository _commentsRepository;
+		private readonly ICommentsService _commentsService;
 
-        public CommentsController(ApplicationDbContext context, IMapper mapper)
-        {
-            _context = context;
-            _mapper = mapper;
+		public CommentsController(ApplicationDbContext context, IMapper mapper, UserManager<Autor> userManager, ICommentsRepository commentsRepository, ICommentsService commentsService)
+		{
+			_commentsRepository = commentsRepository;
+			_commentsService = commentsService;
+		}
 
-        }
-
-        [AllowAnonymous]
+		[AllowAnonymous]
         [HttpGet("GetAllComments")]
-        public async Task<ActionResult<IEnumerable<Comentario>>> GetAllComments()
+        public async Task<IEnumerable<Comentario>> GetAllComments()
         {
-            return await _context.Comentarios.ToListAsync();
+            return await _commentsRepository.GetAll();
         }
 
         [AllowAnonymous]
         [HttpGet("{id:int}")]
         public async Task<ActionResult<Comentario>> GetComment(int id)
         {
-            var comentario = await _context.Comentarios
-                .Include(p => p.Autor)
-                .Include(p => p.Post)
-                .FirstOrDefaultAsync(p => p.Id == id);
+            if (id == 0)  return NotFound();
 
-            return comentario;
+            return await _commentsRepository.GetById(id, "Autor,Post");
         }
 
         [HttpPost("CreateComments")]
         public async Task<ActionResult<Post>> CreateComments(CommentsDTO commentsDTO)
-        {
-            var comments = _mapper.Map<CommentsDTO, Comentario>(commentsDTO);
-
-            _context.Comentarios.Add(comments);
-            await _context.SaveChangesAsync();
+		{
+			if (commentsDTO == null || !ModelState.IsValid)
+			{
+				return BadRequest(ModelState);
+			}
+			var comments = await _commentsService.Create(commentsDTO, User);
 
             return CreatedAtAction(nameof(GetComment), new { id = comments.Id }, comments);
         }
@@ -58,26 +60,30 @@ namespace Blog.Api.Controllers
         [HttpPut("{id:int}")]
         public async Task<IActionResult> UpdateComments(int id, CommentsDTO commentsDTO)
         {
-            if (id != commentsDTO.Id) return BadRequest();
-
-
-            var postMap = _mapper.Map<CommentsDTO, Comentario>(commentsDTO);
-
-            _context.Entry(postMap).State = EntityState.Modified;
-
-            await _context.SaveChangesAsync();
-            return NoContent();
+			if (commentsDTO == null || !ModelState.IsValid)
+			{
+				return BadRequest(ModelState);
+			}
+			if (!await _commentsService.Update(id, commentsDTO, User))
+			{
+				return Forbid();
+			}
+			return NoContent();
         }
 
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeleteComment(int id)
         {
-            var post = await _context.Comentarios.FindAsync(id);
+			var userPost = await _commentsRepository.GetById(id);
 
-            _context.Comentarios.Remove(post);
-            await _context.SaveChangesAsync();
+			if (!await _commentsService.UserHasPermission(id, userPost, User))
+			{
+				return Forbid();
+			}
+			_commentsRepository.Remove(userPost);
+			await _commentsRepository.SaveAsync();
 
-            return NoContent();
-        }
+			return NoContent();
+		}
     }
 }

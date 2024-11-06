@@ -13,6 +13,5 @@ namespace Blog.Core.Data.DTOs
         public int Id { get; set; }
         public string Conteudo { get; set; }
         public int PostId { get; set; }
-        public string AutorId { get; set; }
     }
 }
