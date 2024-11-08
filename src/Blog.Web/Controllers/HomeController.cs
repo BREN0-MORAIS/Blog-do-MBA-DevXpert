@@ -1,6 +1,7 @@
 using AutoMapper;
 using Blog.Core.Data;
 using Blog.Core.Entities;
+using Blog.Core.Interfaces.Repositories;
 using Blog.Web.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -11,26 +12,19 @@ namespace Blog.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-        private ApplicationDbContext _context { get; set; }
-        private readonly IMapper _mapper;
-        private readonly UserManager<Autor> _userManager;
 
-        public HomeController(ApplicationDbContext context, IMapper mapper, UserManager<Autor> userManager)
+        private readonly IPostsRepository _postRepository;
+
+        public HomeController(IPostsRepository postRepository)
         {
-            _context = context;
-            _mapper = mapper;
-            _userManager = userManager;
+            _postRepository = postRepository;
         }
-       
 
-        public  IActionResult Index()
+        public async Task<IActionResult> IndexAsync()
         {
             ListaPostViewModel listaPosts = new ListaPostViewModel();
-            
-            var posts = _context.Posts
-                        .Include(p => p.Comentarios)
-                        .Include(p => p.Autor).ToList().OrderByDescending(x=> x.Id);
+
+            var posts = await _postRepository.GetAll("Comentarios,Autor");
 
             listaPosts.Posts.AddRange(posts);
 
@@ -40,16 +34,6 @@ namespace Blog.Web.Controllers
         
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
 
        
     }

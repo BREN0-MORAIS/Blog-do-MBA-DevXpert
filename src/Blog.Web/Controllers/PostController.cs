@@ -6,15 +6,12 @@ using Blog.Core.Interfaces.Repositories;
 using Blog.Core.Interfaces.Services;
 using Blog.Web.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Hosting;
 
 namespace Blog.Web.Controllers
 {
-	[Authorize]
+    [Authorize]
 	public class PostController : Controller
 	{
 		// GET: PostController
@@ -22,16 +19,14 @@ namespace Blog.Web.Controllers
 		private readonly IPostsRepository _postRepository;
 		private readonly IPostsService _postsService;
 		private readonly ICommentsService _commentsService;
-		private ApplicationDbContext _context { get; set; }
 		private readonly IMapper _mapper;
 		private readonly UserManager<Autor> _userManager;
 
-		public PostController(IPostsRepository postRepository, IPostsService postsService, ICommentsService commentsService, ApplicationDbContext context, IMapper mapper, UserManager<Autor> userManager)
+		public PostController(IPostsRepository postRepository, IPostsService postsService, ICommentsService commentsService, IMapper mapper, UserManager<Autor> userManager)
 		{
 			_postRepository = postRepository;
 			_postsService = postsService;
 			_commentsService = commentsService;
-			_context = context;
 			_mapper = mapper;
 			_userManager = userManager;
 		}
@@ -102,7 +97,7 @@ namespace Blog.Web.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				var post = _postsService.Create(postDto, User);
+		
 				if (postDto.Id == 0)
 					_postsService.Create(postDto, User);
 				else
