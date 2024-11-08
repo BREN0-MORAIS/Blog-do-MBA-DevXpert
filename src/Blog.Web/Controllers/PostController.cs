@@ -45,8 +45,7 @@ namespace Blog.Web.Controllers
 			var userId = _userManager.GetUserId(User);
 			var isAdmin = await _userManager.IsInRoleAsync(await _userManager.FindByIdAsync(userId), "Admin");
 			var posts = await _postRepository.GetAll("Comentarios,Autor");
-
-			if (!isAdmin)
+            if (!isAdmin)
 				posts = posts.Where(x => x.AutorId == userId).OrderByDescending(x=> x.Id);
 			listaPosts.Posts.AddRange(posts);
 

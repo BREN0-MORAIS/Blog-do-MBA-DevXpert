@@ -2,6 +2,14 @@
 @using Microsoft.AspNetCore.Identity
 @model PostComentarioViewModel
 @inject SignInManager<Autor> SignInManager
+@inject UserManager<Autor> userManager
+
+@{
+	var userId = userManager.GetUserId(User)??"";
+	var user = await userManager.FindByIdAsync(userId);
+	var isAdmin = user != null && await userManager.IsInRoleAsync(user, "Admin");
+	var isSignedIn = SignInManager.IsSignedIn(User);
+}
 <div class="container-fluid" style="width:65% !important;">
 
 
@@ -28,7 +36,7 @@
 
 	<hr />
 
-	@if (SignInManager.IsSignedIn(User))
+	@if (isSignedIn)
 	{
 		@using (Html.BeginForm("CreateComment", "Post", FormMethod.Post))
 		{
@@ -63,10 +71,15 @@
 				<br />
 
 
+				@if (userId == comentario.AutorId || userId == Model.Post.AutorId || isAdmin)
+				{
+					<button type="submit" class="btn btn-outline-danger">Excluir</button>
 
-				<button type="submit" class="btn btn-outline-danger">Excluir</button>
-				<button type="button" class="btn btn-outline-primary">Editar</button>
-
+					@if (userId == comentario.AutorId)
+					{
+						<button type="button" class="btn btn-outline-primary">Editar</button>
+					}
+				}
 				<br />
 				<span style="float:right;">@comentario.CreateAt</span>
 
