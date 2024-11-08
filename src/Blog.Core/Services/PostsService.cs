@@ -14,20 +14,26 @@ namespace Blog.Core.Data.Services
 		private readonly IPostsRepository _postRepository;
 		private readonly UserManager<Autor> _userManager;
 		private readonly IMapper _mapper;
+		private readonly ApplicationDbContext _context;
 
-		public PostsService(IPostsRepository postsRepository, UserManager<Autor> userManager, IMapper mapper)
+		public PostsService(IPostsRepository postRepository, UserManager<Autor> userManager, IMapper mapper, ApplicationDbContext context)
 		{
-			_postRepository = postsRepository;
+			_postRepository = postRepository;
 			_userManager = userManager;
 			_mapper = mapper;
+			_context = context;
+		}
+		public Post? GetPost(int id)
+		{
+			return _context.Posts.
+					Include(p => p.Comentarios)
+						.ThenInclude(c => c.Autor)
+					.Include(p => p.Autor).Where(x => x.Id == id).FirstOrDefault();
 		}
 		public async Task<Post> Create(PostDTO postDto, ClaimsPrincipal User)
 		{
-
 			var userId = _userManager.GetUserId(User);
-
 			var post = _mapper.Map<PostDTO, Post>(postDto);
-
 
 			post.AutorId = userId;
 
@@ -59,10 +65,8 @@ namespace Blog.Core.Data.Services
 
 		public async Task<bool> UserHasPermissionPost(int  id,Post userPost , ClaimsPrincipal User)
 		{
-
 			var userId = _userManager.GetUserId(User);
 			var isAdmin = await _userManager.IsInRoleAsync(await _userManager.FindByIdAsync(userId), "Admin");
-
 			if (userPost == null)
 			{
 				return false;

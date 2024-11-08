@@ -12,7 +12,7 @@
 	</thead>
 	<tbody>
 		
-			@foreach (var item in Model.ListaPosts)
+			@foreach (var item in Model.Posts)
 		{
 			<tr>
 				<th scope="row">@item.Id</th>
@@ -22,7 +22,7 @@
  *@				<td>
 					<div style="float:right;">
 						<a asp-controller="Post" asp-action="Index" asp-route-id="@item.Id" type="button" class="btn btn-secondary">Visualizar</a>
-						<a asp-controller="Post" asp-action="CreatePost" asp-route-id="@item.Id" type="button" class="btn btn-primary">Editar</a>
+						<a asp-controller="Post" asp-action="UpInsert" asp-route-id="@item.Id" type="button" class="btn btn-primary">Editar</a>
 						<form asp-controller="Post" asp-action="Delete" asp-route-id="@item.Id" method="post" style="display:inline;">
 							<button type="submit" class="btn btn-danger">Excluir</button>
 						</form>

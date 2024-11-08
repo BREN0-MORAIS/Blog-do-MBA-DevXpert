@@ -32,6 +32,7 @@ namespace Blog.Core.Data.DI
 
             services.AddAutoMapper(typeof(PostProfile));
             ConfigureRepository(services);
+
             return services;
         }
 

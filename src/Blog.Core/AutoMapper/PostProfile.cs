@@ -16,7 +16,7 @@ namespace Blog.Core.AutoMapper
 			//CreateMap<Post, PostDTO>().ReverseMap();
 
 			CreateMap<PostDTO, Post>()
-		  .ForMember(dest => dest.Id, opt => opt.Ignore());
+		  .ForMember(dest => dest.Id, opt => opt.Ignore()).ReverseMap();
 		}
     }
 }

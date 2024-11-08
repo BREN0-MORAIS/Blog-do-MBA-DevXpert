@@ -5,7 +5,7 @@ namespace Blog.Web.Models
 {
     public class PostComentarioViewModel
     {
-        public Post Post { get; set; } = new Post();
+        public Post? Post { get; set; } = new Post();
         public string Comentario { get; set; }
 
         public bool IsDelete { get; set; }

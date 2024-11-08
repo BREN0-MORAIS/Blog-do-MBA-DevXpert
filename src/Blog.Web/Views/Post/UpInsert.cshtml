@@ -9,7 +9,7 @@
 <div class="container">
 	<h2>Criar Novo Artigo</h2>
 
-	@using (Html.BeginForm("CreatePost", "Post", FormMethod.Post))
+	@using (Html.BeginForm("UpInsert", "Post", FormMethod.Post))
 	{
 		<div class="form-group">
 			@Html.TextBox("Titulo", null, new { @class = "form-control", placeholder = "Digite o título do artigo..." })
